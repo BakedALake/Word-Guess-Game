@@ -166,13 +166,14 @@ document.onkeypress = function (event) {
 
   if (isEqual(answerMovie, progressArray)) {
     winCnt++;
-    setTimeout(function () { startGame(); }, 5000);
+    alert("Congratulations, you won! The answer was " + answerMovie + ". Well done, keep it up!");
+    startGame();
   }
   else if (guessesCnt < 1) {
-    for (var i = 0; i < answerMovie.length; i++) {
-      progressArray[i] = answerMovie[i];
-    }
-    setTimeout(function () { startGame(); }, 5000);
+    alert("You lost. The answer was " + answerMovie + ". Better luck next time!");
+    startGame()
   }
+
 }
+
 
