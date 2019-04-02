@@ -4,21 +4,130 @@
 <head>
   <meta charset="UTF-8">
   <title>Disney Movie Game</title>
- 
-  <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">.
-  <link rel="stylesheet" type="text/css" href="./assets/css/style.css">.
+  <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/waltograph" type="text/css" />
 </head>
 
 <body>
+  <div class="container-fluid">
 
-  <h1>Guess the Disney Movie!</h1>
+    <!-- ================================= Title Row ================================= -->
+    <div class="row">
+      <div class="col-4 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div id="subtitle" class="col-4 col">
+        <div id="title" class="div">
+          <img src="assets/images/transparent-disney-logo-tumblr-119676.png" alt="Disney Title">
+        </div>
+        Movie Title Guessing Game
+      </div>
+      <div class="col-4 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+    </div>
 
-  <p> "Press any key to guess!"</p>
-  <div id="gameArea"></div>
+    <!-- ================================= Word Row ================================= -->
+    <div class="row">
+      <div class="col-4 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div class="col-4 col">
+        <div id="wordDisplay" class="div">
+
+        </div>
+      </div>
+      <div class="col-4 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+    </div>
+
+    <!-- ================================= Letters Row ================================= -->
+    <div class="row">
+      <div class="col-4 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div class="col-4 col">
+        Letters Guessed:
+        <div id="lettersDisplay" class="div inline">
+
+        </div>
+      </div>
+      <div class="col-4 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+    </div>
+
+    <!-- ================================= Info Row ================================= -->
+    <div class="row">
+      <div class="col-2 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div class="col-2">
+        Guesses:
+        <div id="guessesDisplay" class="div inline">
+
+        </div>
+      </div>
+      <div class="col-1 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div class="col-2 col">
+        Wins:
+        <div id="winsDisplay" class="div inline">
+
+        </div>
+      </div>
+      <div class="col-1 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div class="col-2 col">
+        Losses:
+        <div id="lossesDisplay" class="div inline">
+
+        </div>
+      </div>
+      <div class="col-2 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+    </div>
+
+    <!-- ================================= Results Row ================================= -->
+    <div class="row">
+      <div class="col-3 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+      <div class="col-6 col">
+        <fieldset id="resultForm">
+          <legend> Last Movie </legend>
+          <div class="row">
+            <div id="moviePicture" class="col-6 col">
+                <img id="moviePoster" src="" alt="Movie Poster" style="display: none;">
+            </div>
+            <div class="col-6 col">
+              <div class="row">
+                <div id="movieTitle" class="col">
+                </div>
+              </div>
+              <div class="row">
+                <div id="moviePlot" class="col">
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-3 col">
+        <!-- Blank collumn for spacing. -->
+      </div>
+    </div>
+  </div>
 
   <script src="./assets/javascript/game.js"></script>
-
-  
 
 </body>
 

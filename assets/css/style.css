@@ -1,0 +1,34 @@
+html {
+    color: white;
+    background: darkblue;
+    background-color: darkblue;
+}
+
+html * {
+    color: white;
+    background: darkblue;
+    background-color: darkblue;
+}
+
+#subtitle {
+    font-family: 'WaltographRegular';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 50px;
+}
+
+div.inline {
+    display: inline;
+}
+
+.row {
+    text-align: center;
+}
+
+.col {
+    text-align: center;
+}
+
+div.alignText {
+    text-align: center;
+}

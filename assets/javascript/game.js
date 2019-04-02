@@ -1,6 +1,4 @@
-// VARIABLES
-// ==========================================================================
-
+// ============================================ VARIABLES ============================================
 // The array of disney movies.
 var movies = [
   "Aladdin",
@@ -16,7 +14,7 @@ var movies = [
   "Pete's-Dragon",
   "Fox-and-the-Hound",
   "Sword-in-the-Stone",
-  "The-Adventures-of-Winnie-the-Pooh",
+  "The-Many-Adventures-of-Winnie-the-Pooh",
   "Mulan",
   "Moana",
   "CoCo",
@@ -24,7 +22,7 @@ var movies = [
   "Wall-e",
   "Up",
   "Robin-Hood",
-  "Lilo-and-Stitch",
+  "Lilo-&-Stitch",
   "Dumbo",
   "Monsters-Inc",
   "Princess-and-the-Frog",
@@ -33,99 +31,23 @@ var movies = [
   "Alice-in-Wonderland",
   "Bambi",
   "Pinocchio",
-  "101-Dalmations",
+  "101-Dalmatians",
   "A-Goofy-Movie",
   "Hercules",
   "A-Bug's-Life"
 ];
 
-var answerMovie = [];
-var progressArray = [];
-var progressDisplay = "";
-var ran;
+var answerMovie = [];                 // Store movie name.
+var progressArray = [];               // Store guess progression.
+var guessesArray = [];                // The array of letters guessed.
+var winCnt = 0;                       // Wins tracker.
+var lossCnt = 0;                      // Losses tracker.
+var guessesCnt = 6;                   // Remaining guesses.
+var omdbKey = "&apikey=e6f74d2d";     // API key for omdb.
+var omdbURL = "https://www.omdbapi.com/?t=";
 
-// The array of letters guessed.
-var guessesArray = [];
 
-// Initialize count variables.
-var winCnt = 0;
-var guessesCnt = 6;
-
-// Blank Line for display, propably removed once CSS is added.
-var br1 = document.createElement("br");
-var br2 = document.createElement("br");
-var br3 = document.createElement("br");
-
-// Choose Random Movie
-ran = [Math.floor(Math.random() * 34)];
-for (var i = 0; i < movies[ran].length; i++) {
-  answerMovie.push(movies[ran][i]);
-}
-
-// Create Divs for display.
-var displayDiv = document.createElement('winString');
-var winString = document.createTextNode("Wins: " + winCnt);
-var movieString = document.createTextNode("Current Movie: " + progressArray.join(" "));
-var guessString = document.createTextNode("Number of Guesses Remaining: " + guessesCnt);
-var guessDisplay = document.createTextNode("Letters Guessed: " + guessesArray);
-displayDiv.appendChild(winString);
-displayDiv.appendChild(br1);
-displayDiv.appendChild(movieString);
-displayDiv.appendChild(br2);
-displayDiv.appendChild(guessString);
-displayDiv.appendChild(br3);
-displayDiv.appendChild(guessDisplay);
-document.body.insertBefore(displayDiv, document.getElementById("gameArea"));
-
-// FUNCTIONS
-// ==============================================================================
-// Update function used on keypress.
-function updateDisplay(pressedKey) {
-  var isContained = false;
-
-  guessesArray.push(pressedKey);
-  for (var i = 0; i < answerMovie.length; i++) {
-    if (answerMovie[i].toLowerCase() === pressedKey) {
-      progressArray[i] = answerMovie[i];
-    }
-  }
-
-  winString.nodeValue = "Wins: " + winCnt;
-  movieString.nodeValue = "Current Movie: " + progressArray.join(" ");
-  guessString.nodeValue = "Number of Guesses Remaining: " + guessesCnt;
-  guessDisplay.nodeValue = "Letters Guessed: " + guessesArray;
-
-  // Check to remove a guess.
-  for (var i = 0; i < answerMovie.length; i++) {
-    if (isContained === false) {
-      if (pressedKey === answerMovie[i] || pressedKey === answerMovie[i].toLowerCase) {
-        isContained = true;
-      }
-    }
-  }
-
-  if (isContained === false) {
-    guessesCnt--;
-  }
-}
-
-// Make Progress Display.
-function makeDisplay() {
-  for (var i = 0; i < answerMovie.length; i++) {
-    if (answerMovie[i] === "-") {
-      progressArray.push('-');
-    }
-
-    else if (answerMovie[i] === "'") {
-      progressArray.push("'");
-    }
-    else {
-      progressArray.push('_');
-    }
-  }
-
-}
-
+// ============================================ FUNCTIONS ============================================
 // New game function.
 function startGame() {
   // Reset and update elements
@@ -137,13 +59,73 @@ function startGame() {
   // Choose Random Movie.
   answerMovie = movies[Math.floor(Math.random() * 34)];
 
-  makeDisplay();
+  // Run make display function
+  displayChange(undefined);
+} // ====================== End of Function ======================
 
-  winString.nodeValue = "Wins: " + winCnt;
-  movieString.nodeValue = "Current Movie: " + progressArray.join(" ");
-  guessString.nodeValue = "Number of Guesses Remaining: " + guessesCnt;
-  guessDisplay.nodeValue = "Letters Guessed: " + guessesArray;
-}
+
+// Update display function
+function displayChange(pressedKey) {
+  var isContained = false;
+  var isGuessed = false;
+
+  // Check if the pressedKey is not a key. (Start game function passes nothing to just get display).
+  // If key is nothing (as in the start function) it will only create the movie display.
+  if (pressedKey === undefined) {
+    for (var i = 0; i < answerMovie.length; i++) {
+      if (answerMovie[i] === "-") {
+        progressArray.push('-');
+      }
+
+      else if (answerMovie[i] === "'") {
+        progressArray.push("'");
+      }
+
+      else {
+        progressArray.push('_');
+      }
+    }
+  }
+
+  // If the key is something do this.
+  else {
+
+    // Check to see if key is already guessed in the guessesArray and mark it true.
+    for (var i = 0; i < guessesArray.length; i++) {
+      if (isGuessed === false) {
+        // If found set isGuessed to true.
+        if (pressedKey === guessesArray[i]) {
+          isGuessed = true;
+        }
+      }
+    }
+
+    // If it's not guessed, push it to guessesArray and set appropriate progress equal to answer.
+    if (!isGuessed) {
+      guessesArray.push(pressedKey);
+      // Check the guess against each letter in the movie answer, if so update the progress and mark isContained as true.
+      for (var i = 0; i < answerMovie.length; i++) {
+        if (answerMovie[i].toLowerCase() === pressedKey) {
+          progressArray[i] = answerMovie[i];
+          isContained = true;
+        }
+      }
+
+      // Check if the guess was wrong, if isContained is false then reduce the guesses.
+      if (!isContained) {
+        guessesCnt--;
+      }
+    }
+  }
+
+  // Update the display
+  $("#wordDisplay").html(progressArray.join(" "));
+  $('#guessesDisplay').html(guessesCnt);
+  $('#winsDisplay').html(winCnt);
+  $('#lossesDisplay').html(lossCnt);
+  $('#lettersDisplay').html(guessesArray);
+} // ====================== End of Function ======================
+
 
 // Function for comparing arrays.
 function isEqual(array1, array2) {
@@ -154,23 +136,66 @@ function isEqual(array1, array2) {
     }
   }
   return doesPass;
+} // ====================== End of Function ======================
+
+
+// Function for comparing arrays.
+function displayMovie(movieName) {
+   // API connection code starts here.
+   $.ajax({
+    url: omdbURL + stringName(movieName) + omdbKey,
+    method: "GET"
+  }).then(function (response) {
+    console.log(movieName);
+    console.log(response);
+
+    $("#moviePoster").attr("src",response.Poster);
+    $("#moviePoster").show();
+    $("#movieTitle").html(stringName(movieName));
+    $("#moviePlot").html(response.Plot);
+  });
+  // API connection code ends here.
+} // ====================== End of Function ======================
+
+
+function stringName(movieName) {
+  var newName = "";
+  for (var i = 0; i < movieName.length; i++) {
+    if (movieName[i] === "-") {
+      newName += " ";
+    }
+    else {
+      newName += movieName[i];
+    }
+  }
+  return newName;
 }
 
-// MAIN PROCESS
-// ==============================================================================
+// ============================================ MAIN PROCESS ============================================
+
+// movies.forEach(function(element){
+//   displayMovie(element);
+// });
 
 // When the user presses a key run the function.
 startGame();
 document.onkeypress = function (event) {
-  updateDisplay(event.key);
+  displayChange(event.key);
 
   if (isEqual(answerMovie, progressArray)) {
     winCnt++;
-    alert("Congratulations, you won! The answer was " + answerMovie + ". Well done, keep it up!");
+    // Run last movie result function with answer.
+    displayMovie(answerMovie);
+
+    // Start new game!
     startGame();
   }
   else if (guessesCnt < 1) {
-    alert("You lost. The answer was " + answerMovie + ". Better luck next time!");
+    lossCnt++;
+    // Run last movie result function with answer.
+    displayMovie(answerMovie);
+
+    // Start new game!
     startGame()
   }
 
